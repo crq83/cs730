@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2e36cc4-677b-4bd6-8ae1-0dadbc4f720b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/World.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vacuum-plan-reference" afterPath="$PROJECT_DIR$/vacuum-plan-reference" />
-    </list>
+    <list default="true" id="c2e36cc4-677b-4bd6-8ae1-0dadbc4f720b" name="Default" comment="" />
     <ignored path="1A.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -655,12 +652,12 @@
       <option name="presentableId" value="Default" />
       <updated>1472676138323</updated>
       <workItem from="1472676140965" duration="979000" />
-      <workItem from="1472733864742" duration="4420000" />
+      <workItem from="1472733864742" duration="4473000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5399000" />
+    <option name="totallyTimeSpent" value="5452000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="23" width="1134" height="932" extended-state="0" />
