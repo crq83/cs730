@@ -1,4 +1,6 @@
 import javafx.util.Pair;
+
+import java.util.HashSet;
 import java.util.Vector;
 
 /**
@@ -8,16 +10,16 @@ public class World {
     public int row, col;
     public char[][] map;
 
-    public Vector<Pair<Integer, Integer>> walls;
-    public Vector<Pair<Integer, Integer>> dirt;
-    public Pair<Integer, Integer> startingLocation;
+    public HashSet<Location> walls;
+    public HashSet<Location> dirt;
+    public Location startingLocation;
 
     public World(Vector<String> data){
         col = Integer.parseInt(data.elementAt(0));
         row = Integer.parseInt(data.elementAt(1));
 
-        walls = new Vector<Pair<Integer, Integer>>();
-        dirt = new Vector<Pair<Integer, Integer>>();
+        walls = new HashSet<>();
+        dirt = new HashSet<>();
 
         map = new char[row][col];
 
@@ -27,15 +29,15 @@ public class World {
                 switch (map[r][c]){
                     case '@':
                         // Initial position
-                        startingLocation = new Pair<>(r, c);
+                        startingLocation = new Location(r, c);
                         break;
                     case '#':
                         // Wall
-                        walls.addElement(new Pair<>(r,c));
+                        walls.add(new Location(r,c));
                         break;
                     case '*':
                         // Dirt
-                        dirt.addElement(new Pair<>(r,c));
+                        dirt.add(new Location(r,c));
                         break;
                 }
             }

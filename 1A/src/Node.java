@@ -11,4 +11,14 @@ public class Node {
         cost = 0;
         parent = null;
     }
+
+    public Node (State curState, Node parent){
+        this.parent = parent;
+        this.state = curState;
+        this.cost = parent.getCost() + 1;
+    }
+
+    public int getCost(){
+        return cost;
+    }
 }

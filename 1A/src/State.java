@@ -1,5 +1,8 @@
 import javafx.util.Pair;
+
+import java.util.HashSet;
 import java.util.Stack;
+import java.lang.Object;
 import java.util.Vector;
 
 /**
@@ -7,10 +10,10 @@ import java.util.Vector;
  */
 public class State {
     public Stack<Character> actions;
-    public Pair<Integer, Integer> currentLocation;
-    public Vector<Pair<Integer, Integer>> remainingDirt;
+    public Location currentLocation;
+    public HashSet<Location> remainingDirt;
 
-    public State(Pair<Integer,Integer> location, Vector<Pair<Integer,Integer>> dirt){
+    public State(Location location, HashSet<Location> dirt){
         remainingDirt = dirt;
         currentLocation = location;
         actions = new Stack<>();
@@ -26,5 +29,14 @@ public class State {
         }else{
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 13 * hash + this.currentLocation.row;
+        hash = 13 * hash + this.remainingDirt.size();
+        hash = 13 * hash + this.currentLocation.col;
+        return hash;
     }
 }
