@@ -1,22 +1,18 @@
-import javafx.util.Pair;
-
+import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.Stack;
+import java.util.Queue;
 import java.lang.Object;
-import java.util.Vector;
 
 /**
  * Created by chasrickarby on 9/1/16.
  */
 public class State {
-    public Stack<Character> actions;
     public Location currentLocation;
     public HashSet<Location> remainingDirt;
 
     public State(Location location, HashSet<Location> dirt){
         remainingDirt = dirt;
         currentLocation = location;
-        actions = new Stack<>();
     }
 
     @Override
@@ -35,8 +31,8 @@ public class State {
     public int hashCode() {
         int hash = 5;
         hash = 13 * hash + this.currentLocation.row;
-        hash = 13 * hash + this.remainingDirt.size();
-        hash = 13 * hash + this.currentLocation.col;
+        hash = 11 * hash + this.remainingDirt.size();
+        hash = 17 * hash + this.currentLocation.col;
         return hash;
     }
 }

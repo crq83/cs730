@@ -15,6 +15,7 @@ public class Main {
     private static PriorityQueue<Node> openList;        // Expanded states
     private static World world;
     private static NodeComparator comparator;
+    private static int nodesGenerated, nodesExpanded;
 
     public static void main(String[] args) throws IOException {
         switch (args[0]){
@@ -42,16 +43,27 @@ public class Main {
                 unsuccessful = true;
                 break;
             }
+
             currentNode = openList.remove();
             closedList.put(currentNode.state.hashCode(), currentNode);
-            if(currentNode.state.remainingDirt.size() == 0){
+
+            List<Node> children = expandNode(currentNode);
+            nodesExpanded++;
+            if(children.size() == 1 && children.get(0).state.remainingDirt.size() == 0){
                 unsuccessful = false;
+                print(children.get(0).actions);
                 break;
-            }else{
-                List<Node> children = expandNode(currentNode);
-                openList.addAll(children);
             }
+            openList.addAll(children);
         }
+    }
+
+    private static void print(ArrayDeque<Character> actions) {
+        for (Character c:actions) {
+            System.out.println(c);
+        }
+        System.out.println(nodesGenerated + " nodes generated");
+        System.out.println(nodesExpanded + " nodes expanded");
     }
 
     private static List<Node> expandNode(Node currentNode) {
@@ -62,23 +74,31 @@ public class Main {
         if(onDirt(currentNode.state.currentLocation)){
             // Vacuum
             State curState = currentNode.state;
+            ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
             curState.remainingDirt.remove(currentNode.state.currentLocation);
+            nodesGenerated++;
             if(!closedList.containsKey(curState.hashCode())){
-                options.add(new Node(curState, currentNode));
+                actions.add('V');
+                options.add(new Node(curState, currentNode, actions));
+                if(currentNode.state.remainingDirt.size() == 0){
+                    return options;
+                }
             }
         }
 
         // Assess the neighbors
         ArrayList<Location> neighborLocations = getNeighborLocations(curLoc.row, curLoc.col);
         for (Location loc: neighborLocations) {
+            nodesGenerated++;
             if(isWall(loc) || outsideMap(loc)){
                 continue;
             }
             State curState = new State(currentNode.state.currentLocation, currentNode.state.remainingDirt);
+            ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
             curState.currentLocation = loc;
             if(!closedList.containsKey(curState.hashCode())){
-                options.add(new Node(curState, currentNode));
-                System.out.println(loc.print());
+                actions.add(loc.direction);
+                options.add(new Node(curState, currentNode, actions));
             }
         }
 
@@ -87,10 +107,10 @@ public class Main {
 
     private static ArrayList<Location> getNeighborLocations(int row, int col) {
         ArrayList<Location> neighbors = new ArrayList<>();
-        neighbors.add(new Location(row - 1, col));
-        neighbors.add(new Location(row, col - 1));
-        neighbors.add(new Location(row + 1, col));
-        neighbors.add(new Location(row, col + 1));
+        neighbors.add(new Location(row - 1, col, 'N')); // North
+        neighbors.add(new Location(row, col - 1, 'W')); // West
+        neighbors.add(new Location(row + 1, col, 'S')); // South
+        neighbors.add(new Location(row, col + 1, 'E')); // East
         return neighbors;
     }
 
