@@ -19,11 +19,7 @@ public class Node {
     public Node (State curState, Node parent, ArrayDeque<Character> queue){
         this.parent = parent;
         this.state = new State(curState.currentLocation, curState.remainingDirt);
-        this.cost = parent.getCost() + 1;
+        this.cost = parent.cost + 1;
         actions = new ArrayDeque<>(queue);
-    }
-
-    public int getCost(){
-        return cost;
     }
 }

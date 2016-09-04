@@ -1,6 +1,4 @@
-import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.Queue;
 import java.lang.Object;
 
 /**
@@ -20,11 +18,7 @@ public class State {
         if (ob == null) return false;
         if (ob.getClass() != getClass()) return false;
         State other = (State) ob;
-        if(other.currentLocation == currentLocation && other.remainingDirt == remainingDirt) {
-            return true;
-        }else{
-            return false;
-        }
+        return other.currentLocation == currentLocation && other.remainingDirt == remainingDirt;
     }
 
     @Override

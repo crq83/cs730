@@ -1,5 +1,3 @@
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,10 +10,8 @@ public class Main {
 
     private static boolean useUniformCost;
     private static Hashtable<Integer, Node> closedList;  // <State hash code, Node (contains g-value)>
-    private static PriorityQueue<Node> openList;        // Expanded states
     private static World world;
-    private static NodeComparator comparator;
-    private static int nodesGenerated, nodesExpanded;
+    private static int nodesGenerated, nodesExpanded, initialHash;
 
     public static void main(String[] args) throws IOException {
         switch (args[0]){
@@ -28,34 +24,113 @@ public class Main {
         }
         Vector<String> textFromFile = openFile(args[1]);
         world = new World(textFromFile);
-        comparator = new NodeComparator();
-        openList = new PriorityQueue<>(comparator);
         closedList = new Hashtable<>();
         vacuum(world);
     }
 
     private static void vacuum(World map) {
+        if (useUniformCost){
+            uniformCostSearch(map);
+        }else {
+            depthFirstSearch(map);
+        }
+    }
+
+    private static void uniformCostSearch(World map) {
         Node currentNode = new Node(map);
+        NodeComparator comparator = new NodeComparator();
+        PriorityQueue<Node> openList = new PriorityQueue<>(comparator);
         openList.add(currentNode);
-        boolean unsuccessful = true;
-        while(unsuccessful){
-            if(openList.size() == 0){
-                unsuccessful = true;
+        while(true){
+            if(openList.size() == 0 && currentNode.state.remainingDirt.size() != 0){
+                System.out.println("Too hard to clean, time to hire The Maids.");
                 break;
             }
 
             currentNode = openList.remove();
             closedList.put(currentNode.state.hashCode(), currentNode);
 
-            List<Node> children = expandNode(currentNode);
+            List<Node> children = UCSexpandNode(currentNode);
             nodesExpanded++;
             if(children.size() == 1 && children.get(0).state.remainingDirt.size() == 0){
-                unsuccessful = false;
                 print(children.get(0).actions);
                 break;
             }
             openList.addAll(children);
         }
+    }
+
+    private static void depthFirstSearch(World map) {
+        Node currentNode = new Node(map);
+        initialHash = currentNode.state.hashCode();
+        Stack<Node> openList = new Stack<>();
+        openList.push(currentNode);
+        while(true){
+            if(openList.size() == 0 && currentNode.state.remainingDirt.size() != 0){
+                System.out.println("Too hard to clean, time to hire The Maids.");
+                break;
+            }
+
+            currentNode = openList.pop();
+
+            if(currentNode.state.remainingDirt.size() == 0){
+                print(currentNode.actions);
+                break;
+            }else{
+                List<Node> children = DFSexpandNode(currentNode);
+                nodesExpanded++;
+                children.forEach(openList::push);
+            }
+        }
+    }
+
+    private static List<Node> DFSexpandNode(Node currentNode) {
+        ArrayList<Node> options = new ArrayList<>();
+        Location curLoc = currentNode.state.currentLocation;
+
+        if(onDirt(currentNode.state.currentLocation)){
+            // Vacuum
+            State curState = currentNode.state;
+            ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
+            curState.remainingDirt.remove(currentNode.state.currentLocation);
+            actions.add('V');
+            Node newNode = new Node(curState, currentNode, actions);
+            nodesGenerated++;
+            options.add(newNode);
+            if(currentNode.state.remainingDirt.size() == 0){
+                return options;
+            }
+        }
+
+        // Assess the neighbors
+        ArrayList<Location> neighborLocations = getNeighborLocations(curLoc.row, curLoc.col);
+        for (Location loc: neighborLocations) {
+            nodesGenerated++;
+            if(isWall(loc) || outsideMap(loc)){
+                continue;
+            }
+            State curState = new State(currentNode.state.currentLocation, currentNode.state.remainingDirt);
+            ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
+            curState.currentLocation = loc;
+            actions.add(loc.direction);
+            Node newNode = new Node(curState, currentNode, actions);
+            if(!beenThere(newNode)){
+                options.add(newNode);
+            }
+        }
+
+        return options;
+    }
+
+    private static boolean beenThere(Node currentNode) {
+        int currentHashCode = currentNode.state.hashCode();
+        while(currentNode.parent != null){
+            if(currentHashCode == currentNode.parent.state.hashCode()){
+                return true;
+            }
+            currentNode = currentNode.parent;
+        }
+        return false;
     }
 
     private static void print(ArrayDeque<Character> actions) {
@@ -66,10 +141,9 @@ public class Main {
         System.out.println(nodesExpanded + " nodes expanded");
     }
 
-    private static List<Node> expandNode(Node currentNode) {
+    private static List<Node> UCSexpandNode(Node currentNode) {
         ArrayList<Node> options = new ArrayList<>();
         Location curLoc = currentNode.state.currentLocation;
-
 
         if(onDirt(currentNode.state.currentLocation)){
             // Vacuum
@@ -115,27 +189,15 @@ public class Main {
     }
 
     private static boolean isWall(Location location){
-        if(world.walls.contains(location)){
-            return true;
-        }
-        return false;
+        return world.walls.contains(location);
     }
 
-    private static boolean outsideMap(Location location){
-        if(location.row < 0 || location.row >= world.row){
-            return true;
-        }
-        if(location.col < 0 || location.col >= world.col){
-            return true;
-        }
-        return false;
+    private static boolean outsideMap(Location location) {
+        return location.row < 0 || location.row >= world.row || location.col < 0 || location.col >= world.col;
     }
 
     private static boolean onDirt(Location location){
-        if (world.dirt.contains(location)){
-            return true;
-        }
-        return false;
+        return world.dirt.contains(location);
     }
 
     private static Vector<String> openFile(String file) throws IOException {
