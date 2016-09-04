@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2e36cc4-677b-4bd6-8ae1-0dadbc4f720b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vw-validator" afterPath="$PROJECT_DIR$/vw-validator" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/make.sh" afterPath="$PROJECT_DIR$/make.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Location.java" afterPath="$PROJECT_DIR$/src/Location.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Node.java" afterPath="$PROJECT_DIR$/src/Node.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/State.java" afterPath="$PROJECT_DIR$/src/State.java" />
     </list>
     <ignored path="1A.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -711,7 +705,7 @@
       <option name="presentableId" value="Default" />
       <updated>1472676138323</updated>
       <workItem from="1472676140965" duration="979000" />
-      <workItem from="1472733864742" duration="33269000" />
+      <workItem from="1472733864742" duration="33311000" />
     </task>
     <task id="LOCAL-00001" summary="Uniform cost search algorithm implemented. Nodes generated is higher than the reference, but nodes expanded is lower... not sure if that's an issue or not, will post on piazza to ask. Still doesn't use redirection, because it's easier to debug without (in intellij)">
       <created>1473019086204</created>
@@ -720,11 +714,18 @@
       <option name="project" value="LOCAL" />
       <updated>1473019086204</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Depth first search algorithm implemented. Nodes generated is higher than the reference, but nodes expanded is lower... not sure if that's an issue or not, will post on piazza to ask. Still doesn't use redirection, because it's easier to debug without (in intellij)">
+      <created>1473024294593</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1473024294593</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34248000" />
+    <option name="totallyTimeSpent" value="34290000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -799,7 +800,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Uniform cost search algorithm implemented. Nodes generated is higher than the reference, but nodes expanded is lower... not sure if that's an issue or not, will post on piazza to ask. Still doesn't use redirection, because it's easier to debug without (in intellij)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Uniform cost search algorithm implemented. Nodes generated is higher than the reference, but nodes expanded is lower... not sure if that's an issue or not, will post on piazza to ask. Still doesn't use redirection, because it's easier to debug without (in intellij)" />
+    <MESSAGE value="Depth first search algorithm implemented. Nodes generated is higher than the reference, but nodes expanded is lower... not sure if that's an issue or not, will post on piazza to ask. Still doesn't use redirection, because it's easier to debug without (in intellij)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Depth first search algorithm implemented. Nodes generated is higher than the reference, but nodes expanded is lower... not sure if that's an issue or not, will post on piazza to ask. Still doesn't use redirection, because it's easier to debug without (in intellij)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
