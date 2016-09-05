@@ -1,5 +1,5 @@
-import java.util.HashSet;
 import java.lang.Object;
+import java.util.HashSet;
 
 /**
  * Created by chasrickarby on 9/1/16.
@@ -24,9 +24,8 @@ public class State {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 13 * hash + this.currentLocation.row;
-        hash = 11 * hash + this.remainingDirt.size();
-        hash = 17 * hash + this.currentLocation.col;
+        hash = 13 * hash + this.currentLocation.hashCode();
+        hash = 11 * hash + this.remainingDirt.hashCode();
         return hash;
     }
 }

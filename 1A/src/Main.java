@@ -48,6 +48,9 @@ public class Main {
             }
 
             currentNode = openList.remove();
+            if(closedList.containsKey(currentNode.state.hashCode())){
+                continue;
+            }
             closedList.put(currentNode.state.hashCode(), currentNode);
 
             List<Node> children = UCSexpandNode(currentNode);
@@ -88,7 +91,7 @@ public class Main {
         ArrayList<Node> options = new ArrayList<>();
         Location curLoc = currentNode.state.currentLocation;
 
-        if(onDirt(currentNode.state.currentLocation)){
+        if(onDirt(currentNode.state.currentLocation, currentNode.state)){
             // Vacuum
             State curState = currentNode.state;
             ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
@@ -105,7 +108,6 @@ public class Main {
         // Assess the neighbors
         ArrayList<Location> neighborLocations = getNeighborLocations(curLoc.row, curLoc.col);
         for (Location loc: neighborLocations) {
-            nodesGenerated++;
             if(isWall(loc) || outsideMap(loc)){
                 continue;
             }
@@ -116,6 +118,7 @@ public class Main {
             Node newNode = new Node(curState, currentNode, actions);
             if(!beenThere(newNode)){
                 options.add(newNode);
+                nodesGenerated++;
             }
         }
 
@@ -146,25 +149,22 @@ public class Main {
         ArrayList<Node> options = new ArrayList<>();
         Location curLoc = currentNode.state.currentLocation;
 
-        if(onDirt(currentNode.state.currentLocation)){
+        if(onDirt(currentNode.state.currentLocation, currentNode.state)){
             // Vacuum
             State curState = new State(currentNode.state.currentLocation, currentNode.state.remainingDirt);
             ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
             curState.remainingDirt.remove(currentNode.state.currentLocation);
-            nodesGenerated++;
             if(!closedList.containsKey(curState.hashCode())){
                 actions.add('V');
                 options.add(new Node(curState, currentNode, actions));
-                if(curState.remainingDirt.size() == 0){
-                    return options;
-                }
+                nodesGenerated++;
+                return options;
             }
         }
 
         // Assess the neighbors
         ArrayList<Location> neighborLocations = getNeighborLocations(curLoc.row, curLoc.col);
         for (Location loc: neighborLocations) {
-            nodesGenerated++;
             if(isWall(loc) || outsideMap(loc)){
                 continue;
             }
@@ -174,10 +174,7 @@ public class Main {
             if(!closedList.containsKey(curState.hashCode())){
                 actions.add(loc.direction);
                 options.add(new Node(curState, currentNode, actions));
-            }else if(closedList.get(curState.hashCode()).cost > currentNode.cost + 1){
-                closedList.remove(curState.hashCode());
-                actions.add(loc.direction);
-                options.add(new Node(curState, currentNode, actions));
+                nodesGenerated++;
             }
         }
 
@@ -201,8 +198,8 @@ public class Main {
         return location.row < 0 || location.row >= world.row || location.col < 0 || location.col >= world.col;
     }
 
-    private static boolean onDirt(Location location){
-        return world.dirt.contains(location);
+    private static boolean onDirt(Location location, State curState){
+        return curState.remainingDirt.contains(location);
     }
 
     private static Vector<String> openFile(String file) throws IOException {

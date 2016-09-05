@@ -32,6 +32,6 @@ public class Location {
     }
 
     public int hashCode(){
-        return (((row * 7) + (col * 13))*31);
+        return (((row * 71) + (col * 51))*5);
     }
 }
