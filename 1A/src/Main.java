@@ -174,6 +174,10 @@ public class Main {
             if(!closedList.containsKey(curState.hashCode())){
                 actions.add(loc.direction);
                 options.add(new Node(curState, currentNode, actions));
+            }else if(closedList.get(curState.hashCode()).cost > currentNode.cost + 1){
+                closedList.remove(curState.hashCode());
+                actions.add(loc.direction);
+                options.add(new Node(curState, currentNode, actions));
             }
         }
 
