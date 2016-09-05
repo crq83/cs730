@@ -22,7 +22,7 @@ public class Main {
                 useUniformCost = false;
                 break;
         }
-        Vector<String> textFromFile = openFile();
+        Vector<String> textFromFile = openFile(args[1]);
         world = new World(textFromFile);
         closedList = new Hashtable<>();
         vacuum(world);
@@ -200,8 +200,8 @@ public class Main {
         return world.dirt.contains(location);
     }
 
-    private static Vector<String> openFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private static Vector<String> openFile(String file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
         Vector<String> data = new Vector<>();
 
         String line = reader.readLine();
