@@ -142,19 +142,20 @@ public class Main {
     }
 
     private static List<Node> UCSexpandNode(Node currentNode) {
+        currentNode.state.currentLocation.direction = '\0';
         ArrayList<Node> options = new ArrayList<>();
         Location curLoc = currentNode.state.currentLocation;
 
         if(onDirt(currentNode.state.currentLocation)){
             // Vacuum
-            State curState = currentNode.state;
+            State curState = new State(currentNode.state.currentLocation, currentNode.state.remainingDirt);
             ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
             curState.remainingDirt.remove(currentNode.state.currentLocation);
             nodesGenerated++;
             if(!closedList.containsKey(curState.hashCode())){
                 actions.add('V');
                 options.add(new Node(curState, currentNode, actions));
-                if(currentNode.state.remainingDirt.size() == 0){
+                if(curState.remainingDirt.size() == 0){
                     return options;
                 }
             }

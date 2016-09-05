@@ -9,7 +9,7 @@ public class State {
     public HashSet<Location> remainingDirt;
 
     public State(Location location, HashSet<Location> dirt){
-        remainingDirt = dirt;
+        remainingDirt = new HashSet<>(dirt);
         currentLocation = location;
     }
 
