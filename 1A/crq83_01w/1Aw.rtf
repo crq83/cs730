@@ -1,0 +1,36 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f0\fs24 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 1. Describe any implementation choices you made that you felt were important. Clearly explain any aspects of your program that aren\'92t working. Mention anything else that we should know when evaluating your work.\
+\
+* When running my solution vs. the reference solution I noticed that there were a lot of situations in which my program would expand/create way more nodes than the reference solution, but get a valid path to vacuum all the dirt. In trying to debug why this was happening I realized that if the robot was on a dirt spot, I would add a new node for vacuuming that spot, but then also add a node for moving in any of the valid directions (N,S,W,E). I realized that this isn\'92t necessary because I couldn\'92t think of an eventuality where the robot would be on a dirty spot and not want to vacuum it. Because of this I decided to have the only expanded node from a dirty spot be the vacuum node, and then to continue as normal after that. In testing I have found that my DFS sometimes takes a tremendously long time on large worlds, but I realized the same thing with the reference solution, so I didn\'92t concern myself with that. Everything else that I tried appeared to be working similarly to the reference, however sometimes my node counts were off (but this could be rooted in what my definition of a generated node was vs the references). I decided to have generated nodes be only those that were added on to the open list. If there was a possible node evaluated (but no object created) that would have moved the robot onto a wall, or off the map, I didn\'92t consider this a generated node.\
+\
+Hard-2 also isn\'92t working for either algorithm and I ran out of time to figure out why not. However, all the other test files my solution had results similar to those of the reference, as well as the other worlds I generated.\
+\
+2. What is the size of the state space for this problem?\
+\
+* The state space for this problem would be a tree of nodes and edges, where nodes are the different states that could be encountered, and the edges are the paths (N, S, W, E, V) that could take you from one node to the next. Each node in my implementation is a data structure (Node) that contains a g-value for the cost, and also an associated state. This state consists of the actions that have been taken to get to the state, the locations of the remaining dirt, and the location of the bot currently. \
+\
+The size of the state space is based on the number of possible branches that could be made from each node (branching factor (B)) and the search depth (D). In that case the combination of those two values gives the possible state space of B^D at search depth of D, or 5^D at any given depth (D would depend on the size and configuration of the world, where B=5 because of N,S,W,E,V operators).\
+\
+3. What is the time and space complexity of each algorithm you implemented? Which algorithms are admissible?\
+\
+* 	Depth First - 		Time: b^m 	Space: bm 	Admissible: No.\
+	Uniform Cost - 	Time: b^d	Space: b^d	Admissible: Yes.\
+	\
+	Where: b - branching factor	m - maximum depth	d - solution depth\
+\
+4. Provide empirical results confirming your answers to the previous question.\
+\
+* With uniform cost search for a map like hard-1.vw, the plan was 59 steps, meaning that the depth would have been 59 to reach success. If you assume a branching factor of 5 (N, S, W, E, V) then the time complexity would be 5^59. The space complexity would be the same because it\'92s uniform cost.\
+\
+With depth first search for a map like small-1.vw, the plan was 131 steps, meaning that the depth would have been 131 to reach success. Assuming the same branching factor of 5, the time complexity would have been 5^131, and the space complexity would have been 5*131. This shows how depth first will be slower, but take up less memory, while uniform cost will take up more memory, but will also guarantee that the best solution is found.\
+\
+5. What suggestions do you have for improving this assignment in the future?\
+\
+* A better clarification between a node and a state would have ben nice, it took me a long time to figure out what the difference was between these two. }

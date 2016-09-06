@@ -93,16 +93,14 @@ public class Main {
 
         if(onDirt(currentNode.state.currentLocation, currentNode.state)){
             // Vacuum
-            State curState = currentNode.state;
+            State curState = new State(currentNode.state.currentLocation, currentNode.state.remainingDirt);
             ArrayDeque<Character> actions = new ArrayDeque<>(currentNode.actions);
             curState.remainingDirt.remove(currentNode.state.currentLocation);
             actions.add('V');
             Node newNode = new Node(curState, currentNode, actions);
             nodesGenerated++;
             options.add(newNode);
-            if(currentNode.state.remainingDirt.size() == 0){
-                return options;
-            }
+            return options;
         }
 
         // Assess the neighbors
